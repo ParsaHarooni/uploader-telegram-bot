@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    depends_on:
+      - redis
+      - db
+    command: nodemon main.py
+    environment:
+      TOKEN: '5740445861:AAFKMBGDRP9InhyG9n1DIHq1pP8aqAlo0mM'
+    volumes: 
+      - .:/app
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: uploader
+      POSTGRES_PASSWORD: supersecretuploadpassword
+      POSTGRES_DB: uploader
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    ports:
+      - "5432:5432"
